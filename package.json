@@ -11,8 +11,12 @@
   "dependencies": {
     "@types/jsdom": "^12.2.1",
     "@types/node-fetch": "^2.1.4",
+    "@types/request-promise-native": "^1.0.15",
+    "@types/tough-cookie": "^2.3.4",
     "jsdom": "^13.1.0",
-    "node-fetch": "^2.3.0"
+    "moment": "^2.23.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5"
   },
   "devDependencies": {
     "ts-node": "^7.0.1",

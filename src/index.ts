@@ -1,5 +1,7 @@
-import fetch from "node-fetch";
+import * as lw from "./LaserWatchApi";
 
 (async () => {
-  console.log(`Running on Node ${process.version}`);
+  const cacheId = await lw.generateReport();
+  console.log("Generated report with cache ID", cacheId);
+  console.log(await lw.generateCsv(cacheId));
 })();
