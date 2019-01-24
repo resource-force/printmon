@@ -1,10 +1,20 @@
 import fetch from "node-fetch";
 import FormData from "form-data";
-import toughCookie from "tough-cookie";
-import qs from "querystring";
-import moment from "moment";
-import config from "../config.json";
-import { RequestResponse } from "request";
+import config from "../../config.json";
+import moment, { Moment } from "moment";
+import querystring from "querystring";
+import * as Groups from "./groups";
+
+export interface PrintRecord {
+  deviceId: string;
+  values: {
+    deviceId: string;
+    count: number;
+    delta: number;
+    firstReportedAt: string;
+    lastReportedAt: string;
+  }[];
+}
 
 const defaultOptions = {
   headers: {
@@ -12,6 +22,7 @@ const defaultOptions = {
       "printmon/0.1.0 (scraping for Acton-Boxborough Regional High School)"
   }
 };
+const DATETIME_FORMAT = "YYYY-MM-DD HH:mm:ss";
 
 export async function login(): Promise<string> {
   const formData = new FormData();
@@ -46,39 +57,27 @@ export async function login(): Promise<string> {
   return cookies;
 }
 
-export async function generateReport(authCookies: string): Promise<string> {
-  const q = qs
-    .stringify({
-      reportId: "f09a4c58-57ab-422c-9a79-1ec7ff85b859",
-      reportParams:
-        '[{"DisplayText":"Group","Value":"0fc2f7df-79d6-48e3-9963-49a18f1ce5e5","ParameterType":2},{"DisplayText":"Start Date","Value":"2019-01-01+00:00:00","ParameterType":0},{"DisplayText":"End Date","Value":"2019-01-31+23:59:59","ParameterType":1},{"DisplayText":"ManagementStatus","ParameterType":4,"Value":"0"}]',
-      _: Number.parseInt(moment().format("X")) * 1000
-      // what
-    })
-    .replace("%2B", "+")
-    .replace("%2B", "+");
-
+export async function fetchUnitsOutput(
+  authCookies: string,
+  start: Moment,
+  end: Moment
+): Promise<PrintRecord[]> {
+  const params = {
+    groupId: Groups.HIGH_SCHOOL,
+    startDate: start.format(DATETIME_FORMAT),
+    endDate: end.format(DATETIME_FORMAT)
+  };
   const res = await fetch(
-    "https://laserwatch2.com/Handlers/ReportRun.ashx?" + q,
+    "https://laserwatch2.com/restapi/3.11.1/meters/Total%2520Units%2520Output/history?" +
+      querystring.stringify(params),
     {
       ...defaultOptions,
       headers: {
-        Cookie: authCookies
+        Cookie: authCookies,
+        Accept: "application/json"
       }
     }
   );
 
-  return (await res.json()).ReportCacheId;
-}
-
-export async function generateCsv(
-  reportCacheId: string,
-  authCookies: string
-): Promise<string> {
-  const q = qs.stringify({ reportCacheId, renderFormat: "csv" });
-  const res = await fetch(
-    "https://laserwatch2.com/handlers/ReportRender.ashx?" + q,
-    { headers: { Cookie: authCookies } }
-  );
-  return await res.text();
+  return await res.json();
 }

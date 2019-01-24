@@ -5,30 +5,38 @@ export default async function init() {
     dialect: "sqlite",
     storage: "./db.sqlite"
   });
-  sequelize.sync();
-  sequelize
-    .authenticate()
-    .then(() => {
-      console.log("Connection has been established successfully.");
-    })
-    .catch(err => {
-      console.error("Unable to connect to the database:", err);
-    });
+  await sequelize.sync();
+  await sequelize.authenticate();
 
   const PrintRecord = sequelize.define("print_record", {
-    time: {
-      type: Sequelize.DATE
-    },
-    sinceLastSeconds: {
-      type: Sequelize.INTEGER
-    },
-    id: {
+    deviceId: {
       type: Sequelize.STRING
     },
-    
+    count: {
+      type: Sequelize.INTEGER
+    },
+    firstReportedAt: {
+      type: Sequelize.DATE
+    },
+    lastReportedAt: {
+      type: Sequelize.INTEGER
+    }
   });
-
   // force: true will drop the table if it already exists
   await PrintRecord.sync({ force: false });
-  return { PrintRecord };
+
+  const KV = sequelize.define("kvstore", {
+    k: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      unique: true
+    },
+    v: {
+      type: Sequelize.STRING,
+      allowNull: false
+    }
+  });
+  await KV.sync({ force: false });
+
+  return { PrintRecord, KV };
 }

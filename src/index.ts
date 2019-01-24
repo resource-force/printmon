@@ -1,13 +1,10 @@
-import * as lw from "./backends/laserwatch";
 import cron from "node-cron";
 import express from "express";
-import "./store";
+import fetchIntoDb from "./fetch-into-db";
+import moment = require("moment");
 
 (async () => {
-  const cookies = await lw.login();
-  const reportId = await lw.generateReport(cookies);
-  const csv = await lw.generateCsv(reportId, cookies);
-  console.log(csv);
+  // await fetchIntoDb(moment("2011-01-01"), moment("2019-01-24"));
 })();
 
 // cron.schedule("* * * * *", () => {
