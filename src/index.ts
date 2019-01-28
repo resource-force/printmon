@@ -2,8 +2,12 @@ import cron from "node-cron";
 import express from "express";
 import fetchIntoDb from "./fetch-into-db";
 import moment = require("moment");
+import * as lw from "./backends/laserwatch"
 
 (async () => {
+  const cookies = await lw.login();
+  const devices = await lw.fetchDevices(cookies);
+  console.log(devices[0].ipAddress);
   // await fetchIntoDb(moment("2011-01-01"), moment("2019-01-24"));
 })();
 

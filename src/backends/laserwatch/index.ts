@@ -16,6 +16,36 @@ export interface PrintRecord {
   }[];
 }
 
+export interface DeviceRecord {
+  groupId: string;
+  lastReportedAt: string;
+  firstReportedAt: string;
+  status: "Stale" | "Ok" | "Warning";
+  type: "Network";
+  ipAddress: string;
+  macAddress: string;
+  managementStatus: "Managed";
+  licenseStatus: string;
+  location: string;
+  assetNumber: string;
+  serialNumber: string;
+  modelMatch: {
+    type: string;
+    modifiedAt: string;
+    model: {
+      id: string;
+      name: string;
+      manufacturer: string;
+      isColor: boolean;
+      hasImage: boolean;
+    },
+    isAutoMatchEnabled: true;
+  }
+  legacyId: number;
+  id: string;
+  name: string;
+}
+
 const defaultOptions = {
   headers: {
     "User-Agent":
@@ -23,6 +53,17 @@ const defaultOptions = {
   }
 };
 const DATETIME_FORMAT = "YYYY-MM-DD HH:mm:ss";
+
+function makeRestCall(endpoint: string, params: {}, cookies: string) {
+  const query = querystring.stringify(params);
+  return fetch(`http://laserwatch2.com/restapi/3.11.1${endpoint}?${query}`, {
+    ...defaultOptions,
+    headers: {
+      Cookie: cookies,
+      Accept: "application/json"
+    }
+  });
+}
 
 export async function login(): Promise<string> {
   const formData = new FormData();
@@ -67,17 +108,19 @@ export async function fetchUnitsOutput(
     startDate: start.format(DATETIME_FORMAT),
     endDate: end.format(DATETIME_FORMAT)
   };
-  const res = await fetch(
-    "https://laserwatch2.com/restapi/3.11.1/meters/Total%2520Units%2520Output/history?" +
-      querystring.stringify(params),
-    {
-      ...defaultOptions,
-      headers: {
-        Cookie: authCookies,
-        Accept: "application/json"
-      }
-    }
+  const res = await makeRestCall(
+    "/meters/Total%2520Units%2520Output/history",
+    params,
+    authCookies
   );
+  return await res.json();
+}
 
+export async function fetchDevices(authCookies: string): Promise<DeviceRecord[]> {
+  const params = {
+    groupId: Groups.HIGH_SCHOOL,
+    includeSubGroups: false
+  };
+  const res = await makeRestCall("/devices", params, authCookies);
   return await res.json();
 }
