@@ -11,8 +11,10 @@ import { getPreviousCounts } from "./api";
 
   const app = express();
   app.get("/", async (_, res) => res.send(await getPreviousCounts()));
+  
+  const port = process.env.PORT || 4000;
 
-  app.listen(4000, () => console.log("API server running on port 4000"));
+  app.listen(port, () => console.log("API server running on port", port));
 
   // Update print records every day
   cron.schedule("0 0 * * *", async () => {
