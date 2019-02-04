@@ -1,21 +1,20 @@
 import cron from "node-cron";
 import express from "express";
-import fetchIntoDb from "./fetch-into-db";
+import updatePrintRecords from "./updaters";
 import moment = require("moment");
-import * as lw from "./backends/laserwatch"
+import init from "./store";
+import { getPreviousCounts } from "./api";
 
 (async () => {
-  const cookies = await lw.login();
-  const devices = await lw.fetchDevices(cookies);
-  console.log(devices[0].ipAddress);
-  // await fetchIntoDb(moment("2011-01-01"), moment("2019-01-24"));
+  await init();
+  await updatePrintRecords();
+
+  const app = express();
+  app.get("/", async (_, res) => res.send(await getPreviousCounts()));
+
+  app.listen(4000, () => console.log("API server running on port 4000"));
+
+  // Update print records every day
+  cron.schedule("0 0 * * *", async () => {
+  });
 })();
-
-// cron.schedule("* * * * *", () => {
-//   console.log("Running every minute.");
-// });
-
-// const app = express();
-// app.get("/", (_, res) => res.send("HELLO WORLD!"));
-
-// app.listen(4000, () => console.log("API server running on port 4000"));
