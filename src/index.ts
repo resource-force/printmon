@@ -9,7 +9,7 @@ import { getHistoricalTotal } from "./api";
   await update();
 
   const app = express();
-  app.get("/historical", getHistoricalTotal);
+  app.get("/api/historical", getHistoricalTotal);
   
   const port = process.env.PORT || 4000;
 
