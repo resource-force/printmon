@@ -105,8 +105,8 @@ export async function fetchUnitsOutput(
 ): Promise<PrintRecord[]> {
   const params = {
     groupId: Groups.HIGH_SCHOOL,
-    startDate: start.format(DATETIME_FORMAT),
-    endDate: end.format(DATETIME_FORMAT)
+    startDate: start.utc().format(DATETIME_FORMAT),
+    endDate: end.utc().format(DATETIME_FORMAT)
   };
   const res = await makeRestCall(
     "/meters/Total%2520Units%2520Output/history",
