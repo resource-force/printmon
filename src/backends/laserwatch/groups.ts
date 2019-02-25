@@ -1,1 +1,1 @@
-export const HIGH_SCHOOL = "0fc2f7df-79d6-48e3-9963-49a18f1ce5e5";
+export const HIGH_SCHOOL = "b2833c2e-9a98-4b43-9b98-e79f33d9bedc";
