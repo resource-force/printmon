@@ -3,13 +3,23 @@ import { Op } from "sequelize";
 import { groupBy } from "lodash";
 import moment from "moment";
 
+function sortObject(o: any) {
+  return Object.keys(o)
+    .sort(function (a, b) {
+      return a.toLowerCase().localeCompare(b.toLowerCase());
+  })
+    .reduce((r, k) => ((r[k] = o[k]), r), {});
+}
+
 export async function getPreviousCounts() {
   let records = await PrintRecord.findAll({
     where: {
       firstReportedAt: {
         [Op.between]: [
           moment()
-            .subtract(30, "days")
+            .subtract(90, "days")
+            .utc()
+            .startOf("day")
             .toDate(),
           moment().toDate()
         ]
@@ -21,7 +31,7 @@ export async function getPreviousCounts() {
   });
 
   const groups = groupBy(records, "dataValues.deviceId");
-  const out: { [name: string]: any } = {};
+  const out: { [name: string]: number } = {};
   for (const deviceId in groups) {
     const name = await DeviceRecord.findOne({
       where: { id: { [Op.eq]: deviceId } }
@@ -34,5 +44,10 @@ export async function getPreviousCounts() {
       .reduce((prev, curr) => prev + curr);
   }
 
-  return out;
+  let count = 0;
+  for (const device in out) {
+    count += out[device];
+  }
+  
+  return "" + count;
 }
