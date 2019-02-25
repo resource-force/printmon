@@ -2,14 +2,14 @@ import cron from "node-cron";
 import express from "express";
 import update from "./updaters";
 import init from "./store";
-import { getPreviousCounts } from "./api";
+import { getHistoricalTotal } from "./api";
 
 (async () => {
   await init();
   await update();
 
   const app = express();
-  app.get("/", async (_, res) => res.send(await getPreviousCounts()));
+  app.get("/historical", getHistoricalTotal);
   
   const port = process.env.PORT || 4000;
 
