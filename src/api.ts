@@ -3,6 +3,10 @@ import { Op } from "sequelize";
 import moment from "moment";
 import { Request, Response } from "express";
 
+function sortObject(o: any) {
+  return Object.keys(o).sort().reduce((r, k) => (r[k] = o[k], r), {});
+}
+
 export async function getHistoricalTotal(req: Request, res: Response) {
   if (!req.query.startDate) {
     return res.status(400).send("Requires query parameter startDate");
@@ -25,9 +29,14 @@ export async function getHistoricalTotal(req: Request, res: Response) {
     }
   });
 
-  const count = records
-    .map(val => val.dataValues.delta)
-    .reduce((prev, curr) => prev + curr, 0);
+  const output: { [date: string]: number } = {};
 
-  res.send("" + count);
+  for (const record of records) {
+    const date = moment(record.dataValues.firstReportedAt).format("YYYY-MM-DD");
+    if (output[date] === undefined) {
+      output[date] = 0;
+    }
+    output[date] += record.dataValues.delta;
+  }
+  res.send(sortObject(output));
 }
