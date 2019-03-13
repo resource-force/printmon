@@ -3,8 +3,8 @@ import HistoricalGraph from "../components/HistoricalGraph";
 import moment from "moment";
 
 export default () => {
-  const [startDate, setStartDate] = useState(moment("2018-07-01"));
-  const [endDate, setEndDate] = useState(moment());
+  const [startDate, setStartDate] = useState(moment.utc("2018-07-01"));
+  const [endDate, setEndDate] = useState(moment.utc());
   const [dailyTotals, setDailyTotals] = useState<
     { [date: string]: number } | undefined
   >(undefined);
