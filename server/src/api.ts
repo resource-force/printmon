@@ -43,7 +43,7 @@ export async function getHistoricalTotal(req: Request, res: Response) {
   } = {};
 
   records.forEach(({ dataValues }) => {
-    const date: string = moment(dataValues.firstReportedAt).format("YYYY-MM");
+    const date: string = dataValues.firstReportedAt.toISOString();
     if (output[date] === undefined) {
       output[date] = 0;
     }

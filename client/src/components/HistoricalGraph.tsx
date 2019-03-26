@@ -8,23 +8,29 @@ import {
   Legend,
   Line
 } from "recharts";
+import moment from "moment";
 
 export default ({ data }: { data: { [date: string]: number } }) => {
-  let totals = [];
   let total = 0;
+  const monthlyTotals = new Map<string, number>();
   for (const date in data) {
-    totals.push({
-      date,
-      total: data[date]
-    });
+    const roundedDate = moment(date).format("YYYY-MM");
+    const oldTotal = monthlyTotals.get(roundedDate) || 0;
+    monthlyTotals.set(roundedDate, data[date] + oldTotal);
     total += data[date];
   }
+
+  const totalArray: { date: string; total: number }[] = [];
+  for (const [date, total] of monthlyTotals) {
+    totalArray.push({ date, total });
+  }
+
   return (
     <>
       <LineChart
         width={1000}
         height={700}
-        data={totals}
+        data={totalArray}
         margin={{
           top: 5,
           right: 30,
