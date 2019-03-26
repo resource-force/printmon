@@ -25,7 +25,7 @@ export default () => {
   return (
     <>
       <h1>
-        Printing from {startDate.toLocaleString()} to {endDate.toLocaleString()}
+        AB Print Data from {startDate.toString()} to {endDate.toLocaleString()}
       </h1>
       {dailyTotals !== undefined && <HistoricalGraph data={dailyTotals} />}
       <input

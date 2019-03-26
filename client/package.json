@@ -15,7 +15,6 @@
     "react-snapshot": "^1.3.0",
     "recharts": "^1.5.0"
   },
-  "proxy": "http://localhost:4000",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build && react-snapshot",
@@ -32,6 +31,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "http-proxy-middleware": "^0.19.1",
     "typescript": "^3.3.3333"
   }
 }
