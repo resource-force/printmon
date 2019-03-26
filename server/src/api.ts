@@ -1,10 +1,19 @@
-import { PrintRecord } from "./store";
+import { PrintRecord, DeviceRecord } from "./store";
 import { Op } from "sequelize";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import { Request, Response } from "express";
+import { groupBy } from "lodash";
 
 function sortObject(o: any) {
-  return Object.keys(o).sort().reduce((r, k) => (r[k] = o[k], r), {});
+  return Object.keys(o)
+    .sort()
+    .reduce((r, k) => ((r[k] = o[k]), r), {});
+}
+
+function roundUp(date: Moment, type: string, offset: number) {
+  let val = date[type]();
+  let roundedVal = Math.ceil((val + 1) / offset) * offset;
+  return date[type](roundedVal);
 }
 
 export async function getHistoricalTotal(req: Request, res: Response) {
@@ -29,14 +38,17 @@ export async function getHistoricalTotal(req: Request, res: Response) {
     }
   });
 
-  const output: { [date: string]: number } = {};
+  const output: {
+    [date: string]: number;
+  } = {};
 
-  for (const record of records) {
-    const date = moment(record.dataValues.firstReportedAt).format("YYYY-MM-DD");
+  records.forEach(({ dataValues }) => {
+    const date: string = moment(dataValues.firstReportedAt).format("YYYY-MM");
     if (output[date] === undefined) {
       output[date] = 0;
     }
-    output[date] += record.dataValues.delta;
-  }
+    output[date] += dataValues.delta;
+  });
+
   res.send(sortObject(output));
 }
