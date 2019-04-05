@@ -10,8 +10,8 @@ import { getHistoricalTotal } from "./api";
 
   const app = express();
   app.get("/api/historical", getHistoricalTotal);
-  
-  const port = process.env.PORT || 4000;
+
+  const port = process.env.PORT || 4005;
 
   app.listen(port, () => console.log("API server running on port", port));
 
