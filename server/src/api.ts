@@ -1,8 +1,9 @@
-import { PrintRecord, DeviceRecord } from "./store";
+import { Meter, Device } from "./store";
 import { Op } from "sequelize";
 import moment, { Moment } from "moment";
 import { Request, Response } from "express";
 import { groupBy } from "lodash";
+import { MeterTypes } from "./laserwatch/types";
 
 function sortObject(o: any) {
   return Object.keys(o)
@@ -30,11 +31,12 @@ export async function getHistoricalTotal(req: Request, res: Response) {
     return res.status(400).send("Bad start/end date");
   }
 
-  let records = await PrintRecord.findAll({
+  let records = await Meter.findAll({
     where: {
       firstReportedAt: {
         [Op.between]: [start.toDate(), end.toDate()]
-      }
+      },
+      type: MeterTypes.TOTAL_UNITS_OUTPUT
     }
   });
 

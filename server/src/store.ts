@@ -1,48 +1,64 @@
 import Sequelize from "sequelize";
 
-export type PrintRecordData = {
+export type MeterData = {
   deviceId: string;
+  type: string;
   count: number;
   delta: number;
   firstReportedAt: Date;
   lastReportedAt: Date;
 };
 
-export let PrintRecord: Sequelize.Model<
-  { dataValues: PrintRecordData },
-  PrintRecordData
+export let Meter: Sequelize.Model<
+  { dataValues: MeterData },
+  MeterData
 > = undefined!;
 
-type KVData = {
-  k: string;
-  v: string;
+type FetchHistoryData = {
+  meterType: string;
+  lastFetch: Date;
 };
 
-export let KV: Sequelize.Model<{ dataValues: KVData }, KVData> = undefined!;
+export let FetchHistory: Sequelize.Model<
+  { dataValues: FetchHistoryData },
+  FetchHistoryData
+> = undefined!;
 
-export type DeviceRecordData = {
+export type DeviceData = {
   id: string;
+  groupId: string;
   name: string;
+  manufacturer: string;
+  isColor: boolean;
+  hasImage: boolean;
 };
 
-export let DeviceRecord: Sequelize.Model<
-  { dataValues: DeviceRecordData },
-  DeviceRecordData
+export let Device: Sequelize.Model<
+  { dataValues: DeviceData },
+  DeviceData
 > = undefined!;
+
+export let sequelize: Sequelize.Sequelize = undefined!;
 
 const RESET_DB = false;
 
 export default async function init() {
-  const sequelize = new Sequelize("database", "x", "y", {
+  sequelize = new Sequelize("database", "", "", {
     dialect: "sqlite",
-    storage: "./db.sqlite"
+    storage: "./db.sqlite",
+    logging: false
   });
   await sequelize.sync();
   await sequelize.authenticate();
 
-  PrintRecord = sequelize.define("print_record", {
+  Meter = sequelize.define("Meter", {
     deviceId: {
       type: Sequelize.UUID,
+      unique: "compositeIndex",
+      allowNull: false
+    },
+    type: {
+      type: Sequelize.STRING,
       unique: "compositeIndex",
       allowNull: false
     },
@@ -65,34 +81,60 @@ export default async function init() {
       allowNull: false
     }
   });
-  // force: true will drop the table if it already exists
-  await PrintRecord.sync({ force: RESET_DB });
 
-  KV = sequelize.define("kvstore", {
-    k: {
+  FetchHistory = sequelize.define("FetchHistory", {
+    meterType: {
       type: Sequelize.STRING,
       allowNull: false,
       unique: true,
       primaryKey: true
     },
-    v: {
-      type: Sequelize.STRING,
+    lastFetch: {
+      type: Sequelize.DATE,
       allowNull: false
     }
   });
-  await KV.sync({ force: RESET_DB });
 
-  DeviceRecord = sequelize.define("device_record", {
+  Device = sequelize.define("Device", {
     id: {
       type: Sequelize.UUID,
       unique: true,
       allowNull: false,
       primaryKey: true
     },
+    groupId: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
     name: {
       type: Sequelize.STRING,
       allowNull: false
+    },
+    manufacturer: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    isColor: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false
+    },
+    hasImage: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false
     }
   });
-  await DeviceRecord.sync({ force: RESET_DB });
+
+  Device.hasMany(Meter, { foreignKey: "deviceId" });
+  FetchHistory.hasOne(Meter, { foreignKey: "meterType" });
+
+  // force: true will drop the table if it already exists
+  await Meter.sync({
+    force: RESET_DB
+  });
+  await FetchHistory.sync({
+    force: RESET_DB
+  });
+  await Device.sync({
+    force: RESET_DB
+  });
 }
