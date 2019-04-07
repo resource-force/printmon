@@ -8,5 +8,11 @@
   "private": true,
   "devDependencies": {
     "lerna": "^3.13.1"
-  }
+  },
+  "scripts": {
+    "start": "lerna run start --parallel --stream"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }
