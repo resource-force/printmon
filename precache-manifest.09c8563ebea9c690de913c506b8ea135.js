@@ -4,19 +4,19 @@ self.__precacheManifest = [
     "url": "/printmon/static/js/runtime~main.2218cb25.js"
   },
   {
-    "revision": "2fe57899826730d9b812",
-    "url": "/printmon/static/js/main.2fe57899.chunk.js"
+    "revision": "018bcb5a168f50a9f146",
+    "url": "/printmon/static/js/main.018bcb5a.chunk.js"
   },
   {
     "revision": "8fd3212b778de6e1715c",
     "url": "/printmon/static/js/2.8fd3212b.chunk.js"
   },
   {
-    "revision": "2fe57899826730d9b812",
+    "revision": "018bcb5a168f50a9f146",
     "url": "/printmon/static/css/main.e7d6913c.chunk.css"
   },
   {
-    "revision": "260f6d3db37dd60abdef8f32ba60e308",
+    "revision": "7735d788e5b64ed3c7ac305209385ba6",
     "url": "/printmon/index.html"
   }
 ];
