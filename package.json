@@ -1,0 +1,12 @@
+{
+  "name": "printmon",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": "https://github.com/resource-force/printmon.git",
+  "author": "Kevin Liu <kevin@potatofrom.space>",
+  "license": "AGPL-3.0+",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.13.1"
+  }
+}

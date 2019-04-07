@@ -11,12 +11,6 @@ function sortObject(o: any) {
     .reduce((r, k) => ((r[k] = o[k]), r), {});
 }
 
-function roundUp(date: Moment, type: string, offset: number) {
-  let val = date[type]();
-  let roundedVal = Math.ceil((val + 1) / offset) * offset;
-  return date[type](roundedVal);
-}
-
 export async function getHistoricalTotal(req: Request, res: Response) {
   if (!req.query.startDate) {
     return res.status(400).send("Requires query parameter startDate");
