@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import HistoricalGraph from "../components/HistoricalGraph";
 import moment from "moment";
 import { HistoricalTotals, MeterTypes } from "../api";
-import "@blueprintjs/core/lib/css/blueprint.css"
-import { Navbar, NavbarGroup, NavbarHeading, NavbarDivider, Classes, Alignment, Button } from "@blueprintjs/core";
+import MomentDate from "../components/MomentDate";
 
 function getTotal(all: HistoricalTotals, type: MeterTypes) {
   const output: { [date: string]: number } = {};
@@ -38,17 +37,9 @@ export default () => {
 
   return (
     <>
-      <Navbar>
-        <NavbarGroup align={Alignment.LEFT}>
-          <NavbarHeading>AB Printing</NavbarHeading>
-          <NavbarDivider />
-          <Button className={Classes.MINIMAL} icon="home" text="Home" />
-          <Button className={Classes.MINIMAL} icon="book" text="About" />
-        </NavbarGroup>
-      </Navbar>
-
       <h1>
-        AB Print Data from {startDate.toString()} to {endDate.toLocaleString()}
+        AB Print Data from <MomentDate date={startDate} /> to{" "}
+        <MomentDate date={endDate} />
       </h1>
       {dailyTotals !== undefined && (
         <>

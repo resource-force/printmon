@@ -1,8 +1,9 @@
 import "react-app-polyfill/ie9"; // For IE 9-11 support (https://github.com/facebook/create-react-app/tree/master/packages/react-app-polyfill)
 import React from "react";
 import { render } from "react-snapshot";
-import "./index.css";
 import App from "./App";
+import "./index.css";
+import "@blueprintjs/core/lib/css/blueprint.css";
 import * as serviceWorker from "./serviceWorker";
 
 render(<App />, document.getElementById("root"));

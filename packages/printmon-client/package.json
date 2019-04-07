@@ -38,6 +38,7 @@
   "devDependencies": {
     "gh-pages": "^2.0.1",
     "http-proxy-middleware": "^0.19.1",
+    "node-sass": "^4.11.0",
     "typescript": "^3.3.3333"
   }
 }
