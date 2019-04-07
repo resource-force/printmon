@@ -5,10 +5,10 @@ import { Moment } from "moment";
 import querystring from "querystring";
 import Groups from "./groups";
 import { DeviceMeterSummary, DeviceCore } from "./types";
+import { version } from "../../package.json";
 
 const DATETIME_FORMAT = "YYYY-MM-DD HH:mm:ss";
-const USER_AGENT =
-  "printmon/0.1.0 (scraping for Acton-Boxborough Regional High School)";
+const USER_AGENT = `printmon/${version} (scraping for Acton-Boxborough Regional High School; scrapes once daily; see +https://resource-force.github.io/printmon/about)`;
 
 function restCall(
   endpoint: string,
@@ -81,7 +81,7 @@ export async function login(): Promise<LaserWatchFetcher> {
 }
 
 export class LaserWatchFetcher {
-  constructor(private authCookies: string) { }
+  constructor(private authCookies: string) {}
 
   async meterHistoryForGroup(
     label: string,
