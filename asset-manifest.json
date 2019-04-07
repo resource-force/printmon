@@ -1,0 +1,13 @@
+{
+  "main.css": "/printmon/static/css/main.e7d6913c.chunk.css",
+  "main.js": "/printmon/static/js/main.2fe57899.chunk.js",
+  "main.js.map": "/printmon/static/js/main.2fe57899.chunk.js.map",
+  "runtime~main.js": "/printmon/static/js/runtime~main.2218cb25.js",
+  "runtime~main.js.map": "/printmon/static/js/runtime~main.2218cb25.js.map",
+  "static/js/2.8fd3212b.chunk.js": "/printmon/static/js/2.8fd3212b.chunk.js",
+  "static/js/2.8fd3212b.chunk.js.map": "/printmon/static/js/2.8fd3212b.chunk.js.map",
+  "index.html": "/printmon/index.html",
+  "precache-manifest.3887f7318fcc2635a93e3c2f12ff6d2f.js": "/printmon/precache-manifest.3887f7318fcc2635a93e3c2f12ff6d2f.js",
+  "service-worker.js": "/printmon/service-worker.js",
+  "static/css/main.e7d6913c.chunk.css.map": "/printmon/static/css/main.e7d6913c.chunk.css.map"
+}
