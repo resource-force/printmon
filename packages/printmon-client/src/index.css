@@ -1,6 +1,7 @@
 body,
 html {
   margin: 0;
+  background: #202b33;
 }
 
 /* apply a natural box layout model to all elements, but allowing components to change */

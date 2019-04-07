@@ -43,9 +43,11 @@ export default () => {
       </h1>
       {dailyTotals !== undefined && (
         <>
+          <h2>Total Units Output</h2>
           <HistoricalGraph
             data={getTotal(dailyTotals, MeterTypes.TOTAL_UNITS_OUTPUT)}
           />
+          <h2>Duplex Output</h2>
           <HistoricalGraph data={getTotal(dailyTotals, MeterTypes.DUPLEX)} />
         </>
       )}
