@@ -11,6 +11,9 @@ function getTotal(all: HistoricalTotals, type: MeterTypes) {
   return output;
 }
 
+const API_HOST =
+  process.env.REACT_APP_API_HOST || "https://printmon.potatofrom.space";
+
 export default () => {
   const [startDate, setStartDate] = useState(moment.utc("2018-07-01"));
   const [endDate, setEndDate] = useState(moment.utc());
@@ -20,7 +23,7 @@ export default () => {
 
   async function updateTotals() {
     const values = await fetch(
-      `/api/historical?startDate=${startDate.format(
+      `${API_HOST}/api/historical?startDate=${startDate.format(
         "YYYY-MM-DD"
       )}&endDate=${endDate.format("YYYY-MM-DD")}`
     );
