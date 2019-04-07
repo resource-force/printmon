@@ -1,13 +1,13 @@
 {
   "main.css": "/printmon/static/css/main.e7d6913c.chunk.css",
-  "main.js": "/printmon/static/js/main.018bcb5a.chunk.js",
-  "main.js.map": "/printmon/static/js/main.018bcb5a.chunk.js.map",
-  "runtime~main.js": "/printmon/static/js/runtime~main.2218cb25.js",
-  "runtime~main.js.map": "/printmon/static/js/runtime~main.2218cb25.js.map",
-  "static/js/2.8fd3212b.chunk.js": "/printmon/static/js/2.8fd3212b.chunk.js",
-  "static/js/2.8fd3212b.chunk.js.map": "/printmon/static/js/2.8fd3212b.chunk.js.map",
+  "main.js": "/printmon/static/js/main.4a191987.chunk.js",
+  "main.js.map": "/printmon/static/js/main.4a191987.chunk.js.map",
+  "runtime~main.js": "/printmon/static/js/runtime~main.da7d43c1.js",
+  "runtime~main.js.map": "/printmon/static/js/runtime~main.da7d43c1.js.map",
+  "static/js/2.525b8629.chunk.js": "/printmon/static/js/2.525b8629.chunk.js",
+  "static/js/2.525b8629.chunk.js.map": "/printmon/static/js/2.525b8629.chunk.js.map",
   "index.html": "/printmon/index.html",
-  "precache-manifest.09c8563ebea9c690de913c506b8ea135.js": "/printmon/precache-manifest.09c8563ebea9c690de913c506b8ea135.js",
+  "precache-manifest.e1a356ff5a0c759db60eef1934e4c44b.js": "/printmon/precache-manifest.e1a356ff5a0c759db60eef1934e4c44b.js",
   "service-worker.js": "/printmon/service-worker.js",
   "static/css/main.e7d6913c.chunk.css.map": "/printmon/static/css/main.e7d6913c.chunk.css.map"
 }
