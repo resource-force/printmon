@@ -3,11 +3,13 @@ import HistoricalGraph from "../components/HistoricalGraph";
 import moment from "moment";
 import { HistoricalTotals, MeterTypes } from "../api";
 import MomentDate from "../components/MomentDate";
+import { withRouter, RouteComponentProps } from "react-router";
 
-function getTotal(all: HistoricalTotals, type: MeterTypes) {
+function getTotal(all: HistoricalTotals) {
   const output: { [date: string]: number } = {};
   for (const date in all) {
-    output[date] = all[date][type];
+    output[date] =
+      all[date][MeterTypes.TOTAL_UNITS_OUTPUT] - all[date][MeterTypes.DUPLEX];
   }
   return output;
 }
@@ -15,7 +17,12 @@ function getTotal(all: HistoricalTotals, type: MeterTypes) {
 const API_HOST =
   process.env.REACT_APP_API_HOST || "https://printmon.potatofrom.space";
 
-export default () => {
+function Home(
+  props: RouteComponentProps<{
+    startDate: string | undefined;
+    endDate: string | undefined;
+  }>
+) {
   const [startDate, setStartDate] = useState(moment.utc("2018-07-01"));
   const [endDate, setEndDate] = useState(moment.utc());
   const [dailyTotals, setDailyTotals] = useState<HistoricalTotals | undefined>(
@@ -43,27 +50,28 @@ export default () => {
       </h1>
       {dailyTotals !== undefined && (
         <>
-          <h2>Total Units Output</h2>
-          <HistoricalGraph
-            data={getTotal(dailyTotals, MeterTypes.TOTAL_UNITS_OUTPUT)}
-          />
-          <h2>Duplex Output</h2>
-          <HistoricalGraph data={getTotal(dailyTotals, MeterTypes.DUPLEX)} />
+          <h2>Physical Pages Printed</h2>
+          <HistoricalGraph data={getTotal(dailyTotals)} />
         </>
       )}
-      <input
-        type="date"
-        value={startDate.format("YYYY-MM-DD")}
-        onChange={e => setStartDate(moment(e.target.value))}
-        onBlur={updateTotals}
-      />{" "}
-      to
-      <input
-        type="date"
-        value={endDate.format("YYYY-MM-DD")}
-        onChange={e => setEndDate(moment(e.target.value))}
-        onBlur={updateTotals}
-      />
+      <p>
+        Select Date Range:{" "}
+        <input
+          type="date"
+          value={startDate.format("YYYY-MM-DD")}
+          onChange={e => setStartDate(moment(e.target.value))}
+          onBlur={updateTotals}
+        />{" "}
+        to
+        <input
+          type="date"
+          value={endDate.format("YYYY-MM-DD")}
+          onChange={e => setEndDate(moment(e.target.value))}
+          onBlur={updateTotals}
+        />
+      </p>
     </>
   );
-};
+}
+
+export default withRouter(Home);

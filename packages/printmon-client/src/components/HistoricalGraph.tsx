@@ -45,7 +45,7 @@ export default ({ data }: { data: { [date: string]: number } }) => {
         <Legend />
         <Line type="monotone" dataKey="total" stroke="#82ca9d" />
       </LineChart>
-      <p>Total: {total}</p>
+      <h2>Total: {total.toLocaleString()}</h2>
     </>
   );
 };
