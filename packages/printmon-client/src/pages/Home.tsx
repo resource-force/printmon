@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import HistoricalGraph from "../components/HistoricalGraph";
 import moment from "moment";
 import { HistoricalTotals, MeterTypes } from "../api";
 import MomentDate from "../components/MomentDate";
 import { withRouter, RouteComponentProps } from "react-router";
+import PrintData from "../components/PrintData";
 
 function getTotal(all: HistoricalTotals) {
   const output: { [date: string]: number } = {};
@@ -40,6 +40,7 @@ function Home(
 
   useEffect(() => {
     updateTotals();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -48,12 +49,7 @@ function Home(
         AB Print Data from <MomentDate date={startDate} /> to{" "}
         <MomentDate date={endDate} />
       </h1>
-      {dailyTotals !== undefined && (
-        <>
-          <h2>Physical Pages Printed</h2>
-          <HistoricalGraph data={getTotal(dailyTotals)} />
-        </>
-      )}
+      {dailyTotals !== undefined && <PrintData data={getTotal(dailyTotals)} />}
       <p>
         Select Date Range:{" "}
         <input
