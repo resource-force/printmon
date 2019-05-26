@@ -7,7 +7,7 @@ with import <nixpkgs> {};
 stdenv.mkDerivation {
     name = "printmon";
     buildInputs = [
-        nodejs-10_x yarn
+        nodejs-10_x yarn python2
     ];
     shellHook = ''
         export PATH="$PWD/node_modules/.bin/:$PATH"
