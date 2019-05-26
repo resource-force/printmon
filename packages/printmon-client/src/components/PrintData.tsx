@@ -2,7 +2,6 @@ import React from "react";
 import moment from "moment";
 import Stats from "./Stats";
 import HistoricalGraph from "./HistoricalGraph";
-import { Card } from "@blueprintjs/core";
 
 export default ({ data }: { data: { [date: string]: number } }) => {
   let total = 0;
@@ -20,10 +19,10 @@ export default ({ data }: { data: { [date: string]: number } }) => {
   }
   return (
     <>
-      <Card>
+      <div style={{ display: "flex", flexDirection: "row" }}>
         <HistoricalGraph data={totalArray} />
-      </Card>
-      <Stats total={total} />
+        <Stats total={total} />
+      </div>
     </>
   );
 };

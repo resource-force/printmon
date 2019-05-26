@@ -12,8 +12,8 @@ import {
 export default ({ data }: { data: { date: string; total: number }[] }) => {
   return (
     <LineChart
-      width={900}
-      height={900}
+      width={500}
+      height={500}
       data={data}
       margin={{
         top: 5,

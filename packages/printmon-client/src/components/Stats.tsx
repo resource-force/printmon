@@ -1,11 +1,15 @@
 import React from "react";
+import RollupCounter from "./RollupCounter";
+
+import styles from "./Stats.module.scss";
 
 export default function Stats({ total }: { total: number }) {
   return (
     <div>
-      <ul>
-        <li>Total: {total.toLocaleString()}</li>
-        <li />
+      <ul className={styles.statsList}>
+        <li>
+          <RollupCounter num={total} unit="sheets" subUnit="this year" />
+        </li>
       </ul>
       <p>
         <em>
