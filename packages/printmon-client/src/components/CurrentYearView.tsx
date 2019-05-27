@@ -1,7 +1,6 @@
 import React from "react";
 import moment from "moment";
 import Stats from "./Stats";
-import HistoricalGraph from "./HistoricalGraph";
 import TreeDisplay from "./tree-display/TreeDisplay";
 
 export default ({ data }: { data: { [date: string]: number } }) => {

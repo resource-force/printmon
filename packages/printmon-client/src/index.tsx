@@ -5,6 +5,7 @@ import { render } from "react-snapshot";
 import App from "./App";
 import "./index.css";
 import "@blueprintjs/core/lib/css/blueprint.css";
+import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
 

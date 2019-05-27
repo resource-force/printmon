@@ -48,7 +48,7 @@ export default function Stats({
         <li>
           <RollupCounter
             num={amountOfGHGEmitted}
-            unit="pounds of Carbon Dioxide"
+            unit="pounds of CO2"
             subUnit="this year"
           />
         </li>

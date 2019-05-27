@@ -20,8 +20,8 @@ function Tree({ isStump }: { isStump: boolean }) {
         marginBottom: "-75px"
       }}
       src={tree}
-      height="75"
-      width="75"
+      height="50"
+      width="50"
       alt=""
     />
   );
@@ -43,16 +43,25 @@ export default function TreeDisplay({
   return (
     <div>
       <p>
-        Of this forest of {MAX_TREES} trees, we have cut down {treesConsumed}{" "}
-        trees.
+        We have used enough paper to cut down {treesConsumed} trees.{" "}
+        {treesRemaining > 0 ? (
+          <>
+            Of this forest of {MAX_TREES} trees, only {treesRemaining} remain.
+          </>
+        ) : (
+          <>
+            Of this forest of 300 trees, we have cut down all of them and more.
+          </>
+        )}
       </p>
+
       <div className={styles.treeDisplay}>
-        {[...Array(treesConsumed).keys()].map(() => (
-          <Tree isStump={true} />
-        ))}
-        {[...Array(treesRemaining).keys()].map(() => (
-          <Tree isStump={false} />
-        ))}
+        {treesConsumed > 0 &&
+          [...Array(Math.min(treesConsumed, 300)).keys()].map(() => (
+            <Tree isStump={true} />
+          ))}
+        {treesRemaining > 0 &&
+          [...Array(treesRemaining).keys()].map(() => <Tree isStump={false} />)}
       </div>
     </div>
   );

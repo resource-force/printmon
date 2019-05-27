@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { HistoricalTotals, MeterTypes } from "../api";
-import MomentDate from "../components/MomentDate";
 import { withRouter } from "react-router";
 import PrintData from "../components/CurrentYearView";
+import { Spinner } from "@blueprintjs/core";
+import { DateInput, IDateFormatProps } from "@blueprintjs/datetime";
 
 function getTotal(all: HistoricalTotals) {
   const output: { [date: string]: number } = {};
@@ -12,6 +13,23 @@ function getTotal(all: HistoricalTotals) {
       all[date][MeterTypes.TOTAL_UNITS_OUTPUT] - all[date][MeterTypes.DUPLEX];
   }
   return output;
+}
+
+function getMomentFormatter(format: string): IDateFormatProps {
+  // note that locale argument comes from locale prop and may be undefined
+  return {
+    formatDate: (date: Date, locale: string) =>
+      moment
+        .utc(date)
+        .locale(locale)
+        .format(format),
+    parseDate: (str: string, locale: string) =>
+      moment
+        .utc(str, format)
+        .locale(locale)
+        .toDate(),
+    placeholder: format
+  };
 }
 
 const API_HOST =
@@ -25,6 +43,7 @@ function Home() {
   );
 
   async function updateTotals() {
+    setDailyTotals(undefined);
     const values = await fetch(
       `${API_HOST}/api/historical?startDate=${startDate.format(
         "YYYY-MM-DD"
@@ -40,27 +59,47 @@ function Home() {
 
   return (
     <>
-      <h1>
-        AB Print Data from <MomentDate date={startDate} /> to{" "}
-        <MomentDate date={endDate} />
-      </h1>
-      {dailyTotals !== undefined && <PrintData data={getTotal(dailyTotals)} />}
+      <h1>AB Paper Consumption</h1>
       <p>
-        Select Date Range:{" "}
-        <input
-          type="date"
-          value={startDate.format("YYYY-MM-DD")}
-          onChange={e => setStartDate(moment(e.target.value))}
-          onBlur={updateTotals}
-        />{" "}
-        to
-        <input
-          type="date"
-          value={endDate.format("YYYY-MM-DD")}
-          onChange={e => setEndDate(moment(e.target.value))}
-          onBlur={updateTotals}
-        />
+        <em>
+          From{" "}
+          <DateInput
+            {...getMomentFormatter("LL")}
+            value={startDate.toDate()}
+            maxDate={endDate.toDate()}
+            onChange={e => {
+              setStartDate(moment(e));
+              updateTotals();
+            }}
+            locale="en"
+          />{" "}
+          to{" "}
+          <DateInput
+            {...getMomentFormatter("LL")}
+            value={endDate.toDate()}
+            minDate={startDate.toDate()}
+            onChange={e => {
+              setEndDate(moment(e));
+              updateTotals();
+            }}
+            locale="en"
+          />
+          ...
+        </em>
       </p>
+
+      {dailyTotals !== undefined ? (
+        <>
+          <PrintData data={getTotal(dailyTotals)} />
+        </>
+      ) : (
+        <div style={{ textAlign: "center" }}>
+          <p>
+            <Spinner />
+          </p>
+          <p>Loading...</p>
+        </div>
+      )}
     </>
   );
 }
