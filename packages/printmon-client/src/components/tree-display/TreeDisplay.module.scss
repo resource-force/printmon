@@ -1,0 +1,20 @@
+.treeDisplay {
+  padding: 1em;
+  padding-top: 300px;
+  overflow: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  user-select: none;
+  background: url(../../images/dirt.jpg);
+  background-size: 100% 100%;
+
+  padding-left: 100px;
+  padding-bottom: 100px;
+
+  /* Disable the fancy background on smaller screens */
+  @media (max-width: 950px) {
+    padding-top: 1em;
+    background: tan;
+  }
+}

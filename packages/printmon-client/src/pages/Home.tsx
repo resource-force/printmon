@@ -4,6 +4,7 @@ import { HistoricalTotals, MeterTypes } from "../api";
 import MomentDate from "../components/MomentDate";
 import { withRouter } from "react-router";
 import PrintData from "../components/CurrentYearView";
+import TreeDisplay from "../components/tree-display/TreeDisplay";
 
 function getTotal(all: HistoricalTotals) {
   const output: { [date: string]: number } = {};
@@ -23,7 +24,6 @@ function Home() {
   const [dailyTotals, setDailyTotals] = useState<HistoricalTotals | undefined>(
     undefined
   );
-
 
   async function updateTotals() {
     const values = await fetch(
@@ -62,9 +62,8 @@ function Home() {
           onBlur={updateTotals}
         />
       </p>
-    
-
-      </>
+      <TreeDisplay />
+    </>
   );
 }
 
