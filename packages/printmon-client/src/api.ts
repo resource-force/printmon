@@ -22,3 +22,4 @@ export type HistoricalTotals = {
     [index: string]: number;
   };
 };
+  

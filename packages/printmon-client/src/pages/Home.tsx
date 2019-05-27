@@ -24,6 +24,7 @@ function Home() {
     undefined
   );
 
+
   async function updateTotals() {
     const values = await fetch(
       `${API_HOST}/api/historical?startDate=${startDate.format(
@@ -61,7 +62,9 @@ function Home() {
           onBlur={updateTotals}
         />
       </p>
-    </>
+    
+
+      </>
   );
 }
 
