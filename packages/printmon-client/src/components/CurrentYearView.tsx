@@ -3,7 +3,13 @@ import moment from "moment";
 import Stats from "./Stats";
 import TreeDisplay from "./tree-display/TreeDisplay";
 
-export default ({ data }: { data: { [date: string]: number } }) => {
+export default ({
+  data,
+  days
+}: {
+  data: { [date: string]: number };
+  days: number;
+}) => {
   let unrecycledPaperTotal = 0;
   let recycledPaperTotal = 0;
   const monthlyTotals = new Map<string, number>();
@@ -31,8 +37,9 @@ export default ({ data }: { data: { [date: string]: number } }) => {
           unrecycledPaperTotal={unrecycledPaperTotal}
           recycledPaperTotal={recycledPaperTotal}
         />
-        {/* <HistoricalGraph data={totalArray} /> */}
+
         <Stats
+          days={days}
           unrecycledPaperTotal={unrecycledPaperTotal}
           recycledPaperTotal={recycledPaperTotal}
         />

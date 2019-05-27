@@ -1,9 +1,37 @@
 .statsList {
-  font-size: 4em;
+  font-size: 2em;
   margin: 0;
   padding: 0;
   list-style: none;
+  text-align: center;
 }
+
 .statsList li {
-  margin: 1em;
+  margin: 0.25em 0;
+}
+
+.counter__odometer {
+  width: 50%;
+  display: inline-block;
+  text-align: right;
+  padding-right: 0.5em;
+}
+.counter__unit {
+  width: 50%;
+  text-align: left;
+  display: inline-block;
+  font-family: Arimo, monospace;
+  flex-direction: column;
+  font-variant: small-caps;
+}
+
+@media (min-width: 950px) {
+  .statsList {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .statsList li {
+    width: 50%;
+  }
 }

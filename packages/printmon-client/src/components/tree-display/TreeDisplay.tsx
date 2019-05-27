@@ -1,10 +1,9 @@
 import React from "react";
 
 import styles from "./TreeDisplay.module.scss";
+import paperToTrees from "../../trees";
 const tree = require("../../images/tree.png");
 
-const UNRECYCLED_SHEETS_PER_TREE = 8300;
-const THIRTY_PCT_RECYCLED_SHEETS_PER_TREE = 8300 / 0.7;
 const MAX_TREES = 300;
 
 function Tree({ isStump }: { isStump: boolean }) {
@@ -34,10 +33,7 @@ export default function TreeDisplay({
   unrecycledPaperTotal: number;
   recycledPaperTotal: number;
 }) {
-  const treesConsumed = Math.round(
-    unrecycledPaperTotal / UNRECYCLED_SHEETS_PER_TREE -
-      recycledPaperTotal / THIRTY_PCT_RECYCLED_SHEETS_PER_TREE
-  );
+  const treesConsumed = paperToTrees(unrecycledPaperTotal, recycledPaperTotal);
   const treesRemaining = 300 - treesConsumed;
 
   return (

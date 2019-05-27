@@ -19,13 +19,11 @@ function getMomentFormatter(format: string): IDateFormatProps {
   // note that locale argument comes from locale prop and may be undefined
   return {
     formatDate: (date: Date, locale: string) =>
-      moment
-        .utc(date)
+      moment(date)
         .locale(locale)
         .format(format),
     parseDate: (str: string, locale: string) =>
-      moment
-        .utc(str, format)
+      moment(str, format)
         .locale(locale)
         .toDate(),
     placeholder: format
@@ -90,7 +88,10 @@ function Home() {
 
       {dailyTotals !== undefined ? (
         <>
-          <PrintData data={getTotal(dailyTotals)} />
+          <PrintData
+            data={getTotal(dailyTotals)}
+            days={endDate.diff(startDate, "days")}
+          />
         </>
       ) : (
         <div style={{ textAlign: "center" }}>

@@ -1,20 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-import styles from "./RollupCounter.module.scss";
-
 //@ts-ignore
 import useOdometer from "use-odometer";
 import "odometer/themes/odometer-theme-car.css";
 
-export default function RollupCounter({
-  num,
-  unit,
-  subUnit
-}: {
-  num: number;
-  unit: string;
-  subUnit: string;
-}) {
+export default function RollupCounter({ num }: { num: number }) {
   const targetRef = React.useRef(null);
   // Roll up the number from zero on initial mount, have it update as num
   // changes as well.
@@ -22,15 +12,7 @@ export default function RollupCounter({
   useEffect(() => {
     setCur(num);
   }, [num]);
-  useOdometer(targetRef, cur, { theme: "car" });
+  useOdometer(targetRef, cur);
 
-  return (
-    <>
-      <span ref={targetRef} />{" "}
-      <span className={styles.unit}>
-        <span className={styles.primaryUnit}>{unit}</span>
-        <span className={styles.subUnit}>{subUnit}</span>
-      </span>
-    </>
-  );
+  return <span ref={targetRef} />;
 }
