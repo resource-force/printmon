@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { HistoricalTotals, MeterTypes } from "../api";
 import MomentDate from "../components/MomentDate";
-import { withRouter, RouteComponentProps } from "react-router";
-import PrintData from "../components/PrintData";
+import { withRouter } from "react-router";
+import PrintData from "../components/CurrentYearView";
 
 function getTotal(all: HistoricalTotals) {
   const output: { [date: string]: number } = {};
@@ -17,12 +17,7 @@ function getTotal(all: HistoricalTotals) {
 const API_HOST =
   process.env.REACT_APP_API_HOST || "https://printmon.potatofrom.space";
 
-function Home(
-  props: RouteComponentProps<{
-    startDate: string | undefined;
-    endDate: string | undefined;
-  }>
-) {
+function Home() {
   const [startDate, setStartDate] = useState(moment.utc("2018-07-01"));
   const [endDate, setEndDate] = useState(moment.utc());
   const [dailyTotals, setDailyTotals] = useState<HistoricalTotals | undefined>(
