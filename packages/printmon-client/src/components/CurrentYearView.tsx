@@ -27,12 +27,12 @@ export default ({ data }: { data: { [date: string]: number } }) => {
 
   return (
     <>
-      <div style={{ display: "flex", flexDirection: "row" }}>
+      <div>
         <TreeDisplay
           unrecycledPaperTotal={unrecycledPaperTotal}
           recycledPaperTotal={recycledPaperTotal}
         />
-        <HistoricalGraph data={totalArray} />
+        {/* <HistoricalGraph data={totalArray} /> */}
         <Stats
           unrecycledPaperTotal={unrecycledPaperTotal}
           recycledPaperTotal={recycledPaperTotal}

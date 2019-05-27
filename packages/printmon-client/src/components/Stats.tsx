@@ -30,26 +30,36 @@ export default function Stats({
             unit="whole sheets of paper"
             subUnit="this year"
           />
+        </li>
+        <li>
           <RollupCounter
             num={numOfTreesKilled}
             unit="short tons of wood"
             subUnit="this year"
           />
+        </li>
+        <li>
           <RollupCounter
             num={amountOfEnergyWasted}
             unit="BTUS of energy"
             subUnit="this year"
           />
+        </li>
+        <li>
           <RollupCounter
             num={amountOfGHGEmitted}
             unit="pounds of Carbon Dioxide"
             subUnit="this year"
           />
+        </li>
+        <li>
           <RollupCounter
             num={amountOfWaterUsed}
             unit="gallons of water"
             subUnit="this year"
           />
+        </li>
+        <li>
           <RollupCounter
             num={amountOfSolidWaste}
             unit="pounds of solid waste"
