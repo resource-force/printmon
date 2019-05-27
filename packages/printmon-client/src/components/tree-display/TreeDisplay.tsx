@@ -53,11 +53,13 @@ export default function TreeDisplay({
 
       <div className={styles.treeDisplay}>
         {treesConsumed > 0 &&
-          [...Array(Math.min(treesConsumed, 300)).keys()].map(() => (
-            <Tree isStump={true} />
+          [...Array(Math.min(treesConsumed, 300)).keys()].map(i => (
+            <Tree key={i} isStump={true} />
           ))}
         {treesRemaining > 0 &&
-          [...Array(treesRemaining).keys()].map(() => <Tree isStump={false} />)}
+          [...Array(treesRemaining).keys()].map(i => (
+            <Tree key={i} isStump={false} />
+          ))}
       </div>
     </div>
   );

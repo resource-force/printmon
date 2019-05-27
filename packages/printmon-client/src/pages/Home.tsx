@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import moment from "moment";
 import { HistoricalTotals, MeterTypes } from "../api";
 import { withRouter } from "react-router";
@@ -22,10 +22,14 @@ function getMomentFormatter(format: string): IDateFormatProps {
       moment(date)
         .locale(locale)
         .format(format),
-    parseDate: (str: string, locale: string) =>
-      moment(str, format)
-        .locale(locale)
-        .toDate(),
+    parseDate: (str: string, locale: string) => {
+      const date = moment.utc(str, format).locale(locale);
+      if (!date.isValid()) {
+        return false;
+      } else {
+        return date.toDate();
+      }
+    },
     placeholder: format
   };
 }
@@ -34,13 +38,13 @@ const API_HOST =
   process.env.REACT_APP_API_HOST || "https://printmon.potatofrom.space";
 
 function Home() {
-  const [startDate, setStartDate] = useState(moment.utc("2018-07-01"));
+  const [startDate, setStartDate] = useState(moment("2018-07-01"));
   const [endDate, setEndDate] = useState(moment.utc());
   const [dailyTotals, setDailyTotals] = useState<HistoricalTotals | undefined>(
     undefined
   );
 
-  async function updateTotals() {
+  const updateTotals = useCallback(async () => {
     setDailyTotals(undefined);
     const values = await fetch(
       `${API_HOST}/api/historical?startDate=${startDate.format(
@@ -48,43 +52,45 @@ function Home() {
       )}&endDate=${endDate.format("YYYY-MM-DD")}`
     );
     setDailyTotals(await values.json());
-  }
+  }, [startDate, endDate]);
 
   useEffect(() => {
     updateTotals();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [updateTotals]);
 
   return (
     <>
       <h1>AB Paper Consumption</h1>
-      <p>
-        <em>
-          From{" "}
-          <DateInput
-            {...getMomentFormatter("LL")}
-            value={startDate.toDate()}
-            maxDate={endDate.toDate()}
-            onChange={e => {
+      <em>
+        From{" "}
+        <DateInput
+          {...getMomentFormatter("LL")}
+          canClearSelection={false}
+          value={startDate.toDate()}
+          maxDate={endDate.toDate()}
+          onChange={(e, isUserChange) => {
+            if (isUserChange) {
               setStartDate(moment(e));
-              updateTotals();
-            }}
-            locale="en"
-          />{" "}
-          to{" "}
-          <DateInput
-            {...getMomentFormatter("LL")}
-            value={endDate.toDate()}
-            minDate={startDate.toDate()}
-            onChange={e => {
+            }
+          }}
+          locale="en"
+        />{" "}
+        to{" "}
+        <DateInput
+          {...getMomentFormatter("LL")}
+          canClearSelection={false}
+          value={endDate.toDate()}
+          minDate={startDate.toDate()}
+          maxDate={new Date()}
+          onChange={(e, isUserChange) => {
+            if (isUserChange) {
               setEndDate(moment(e));
-              updateTotals();
-            }}
-            locale="en"
-          />
-          ...
-        </em>
-      </p>
+            }
+          }}
+          locale="en"
+        />
+        ...
+      </em>
 
       {dailyTotals !== undefined ? (
         <>
@@ -95,9 +101,8 @@ function Home() {
         </>
       ) : (
         <div style={{ textAlign: "center" }}>
-          <p>
-            <Spinner />
-          </p>
+          <Spinner />
+
           <p>Loading...</p>
         </div>
       )}
