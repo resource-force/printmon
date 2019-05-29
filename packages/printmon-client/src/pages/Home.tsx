@@ -60,7 +60,7 @@ function Home() {
 
   return (
     <>
-      <h1>AB Paper Consumption</h1>
+      <h1>ABRHS Paper Consumption</h1>
       <em>
         From{" "}
         <DateInput
