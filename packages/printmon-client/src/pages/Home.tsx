@@ -113,7 +113,8 @@ function Home() {
 
       <p>
         If you have any questions on the data provided or our paper usage as a
-        whole, please contact <a href="mailto:">Name</a>.
+        whole, please contact us at{" "}
+        <a href="mailto:ABPaperProject@gmail.com">ABPaperProject@gmail.com</a>.
       </p>
     </>
   );
