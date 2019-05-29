@@ -91,6 +91,8 @@ function Home() {
         />
         ...
       </em>
+      <br />
+      <br />
 
       {dailyTotals !== undefined ? (
         <>
@@ -106,6 +108,13 @@ function Home() {
           <p>Loading...</p>
         </div>
       )}
+
+      <h2>Questions</h2>
+
+      <p>
+        If you have any questions on the data provided or our paper usage as a
+        whole, please contact <a href="mailto:">Name</a>.
+      </p>
     </>
   );
 }

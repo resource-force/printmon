@@ -47,7 +47,14 @@ export default function Stats({
         </a>
         .
       </p>
-      <p>Over the course of {days} days, we used...</p>
+      <p
+        style={{
+          textAlign: "center",
+          fontSize: "2em"
+        }}
+      >
+        Over the course of <strong>{days}</strong> days, we used...
+      </p>
       <ul className={styles.statsList}>
         <li>
           <Counter
