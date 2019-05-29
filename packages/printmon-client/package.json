@@ -2,7 +2,7 @@
   "name": "printmon-client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://resource-force.github.io/printmon/",
+  "homepage": "https://ab-printing.netlify.com",
   "dependencies": {
     "@blueprintjs/core": "^3.15.1",
     "@blueprintjs/datetime": "^3.9.0",
