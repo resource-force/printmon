@@ -72,7 +72,7 @@ export default function Stats({
           <Counter num={woodUsed} unit="short tons of wood" />
         </li>
         <li>
-          <Counter num={amountOfEnergyWasted} unit="BTUs of energy" />
+          <Counter num={amountOfEnergyWasted} unit="million BTUs of energy" />
         </li>
         <li>
           <Counter num={amountOfWaterUsed} unit="gallons of water" />
