@@ -1,6 +1,5 @@
 import fetch from "node-fetch";
 import FormData from "form-data";
-import config from "../config.json";
 import { Moment } from "moment";
 import querystring from "querystring";
 import Groups from "./groups";
@@ -9,6 +8,14 @@ import { version } from "../../package.json";
 
 const DATETIME_FORMAT = "YYYY-MM-DD HH:mm:ss";
 const USER_AGENT = `printmon/${version} (scraping for Acton-Boxborough Regional High School; scrapes once daily; see +https://resource-force.github.io/printmon/about)`;
+
+if (!process.env.PRINTMON_USERNAME || !process.env.PRINTMON_PASSWORD) {
+  throw new Error(
+    "Required authentication environment variables not set. Please set PRINTMON_USERNAME and PRINTMON_PASSWORD."
+  );
+}
+const USERNAME = process.env.PRINTMON_USERNAME;
+const PASSWORD = process.env.PRINTMON_PASSWORD;
 
 function restCall(
   endpoint: string,
@@ -52,8 +59,8 @@ export async function login(): Promise<LaserWatchFetcher> {
     "/wEPDwULLTE3MzQ4MTMwMTEPFgIeE1ZhbGlkYXRlUmVxdWVzdE1vZGUCARYCZg9kFgICAQ9kFgQCBQ8PFgIeBFRleHQFBUxvZ2luZGQCBw8PFgIeB1Zpc2libGVoZGRkZUvo1nPlYwpD07k6yA6Ok5yhQVPg/HwbruivvznByw8="
   );
   formData.append("__VIEWSTATEGENERATOR", "C2EE9ABB");
-  formData.append("txtuserName", config.username);
-  formData.append("txtPassword", config.password);
+  formData.append("txtuserName", USERNAME);
+  formData.append("txtPassword", PASSWORD);
   formData.append("cmdLogin", "Login");
   const response = await fetch("https://laserwatch2.com/login.aspx", {
     method: "POST",

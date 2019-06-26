@@ -60,5 +60,5 @@ typings/
 # next.js build output
 .next
 
-src/config.json
 db.sqlite
+dist
