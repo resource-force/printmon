@@ -1,4 +1,5 @@
 import Sequelize from "sequelize";
+import path from "path";
 
 export type MeterData = {
   deviceId: string;
@@ -42,10 +43,12 @@ export let sequelize: Sequelize.Sequelize = undefined!;
 
 const RESET_DB = false;
 
-export default async function init() {
+export default async function init(dataFolder: string) {
+  const dbPath = path.join(dataFolder, "./db.sqlite");
+  console.log("Connecting to SQLite db at", dbPath);
   sequelize = new Sequelize("database", "", "", {
     dialect: "sqlite",
-    storage: "./db.sqlite",
+    storage: dbPath,
     logging: false
   });
   await sequelize.sync();

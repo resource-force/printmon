@@ -1,29 +1,25 @@
 import cron from "node-cron";
-import express from "express";
 import update from "./updaters";
 import init from "./store";
-import { getHistoricalTotal } from "./api";
+import server from "./express";
+import program from "commander";
+import { version } from "../package.json";
+import { cwd } from "process";
 
 (async () => {
-  await init();
+  program
+    .version(version)
+    .option(
+      "-d, --data-directory [directory]",
+      "Data directory to store SQLite DB in (default: current directory)"
+    )
+    .parse(process.argv);
+
+  const dataDirectory: string = program.dataDirectory || cwd();
+
+  await init(dataDirectory);
   await update();
-
-  const app = express();
-  // Allow all CORS
-  app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    next();
-  });
-  app.get("/api/historical", getHistoricalTotal);
-
-  const port = process.env.PORT || 4005;
-
-  app.listen(port, () => console.log("API server running on port", port));
-
+  server();
   // Update print records every day
   cron.schedule("0 0 * * *", async () => {
     await update();
