@@ -71,16 +71,15 @@ export default async function init(dataFolder: string) {
     },
     count: {
       type: Sequelize.INTEGER,
+      unique: "compositeIndex",
       allowNull: false
     },
     firstReportedAt: {
       type: Sequelize.DATE,
-      unique: "compositeIndex",
       allowNull: false
     },
     lastReportedAt: {
       type: Sequelize.DATE,
-      unique: "compositeIndex",
       allowNull: false
     }
   });

@@ -8,10 +8,13 @@ import { DateInput, IDateFormatProps } from "@blueprintjs/datetime";
 
 function getTotal(all: HistoricalTotals) {
   const output: { [date: string]: number } = {};
+  let t = 0;
   for (const date in all) {
     output[date] =
       all[date][MeterTypes.TOTAL_UNITS_OUTPUT] - all[date][MeterTypes.DUPLEX];
+    t += all[date][MeterTypes.TOTAL_UNITS_OUTPUT];
   }
+  console.log(t, "units output");
   return output;
 }
 

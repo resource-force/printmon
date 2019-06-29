@@ -137,7 +137,7 @@ export class LaserWatchFetcher {
   async devices(groupId: Groups): Promise<DeviceCore[]> {
     const params = {
       groupId,
-      includeSubGroups: false
+      includeSubGroups: true
     };
     const res = await restCall("/devices", "GET", params, this.authCookies);
     return await res.json();
