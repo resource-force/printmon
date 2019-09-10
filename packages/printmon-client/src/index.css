@@ -13,3 +13,8 @@ html {
 *:after {
   box-sizing: inherit;
 }
+
+/* Fix recharts tooltip color */
+.recharts-tooltip-wrapper {
+  color: black;
+}

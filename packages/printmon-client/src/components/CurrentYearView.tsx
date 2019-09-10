@@ -2,6 +2,7 @@ import React from "react";
 import moment from "moment";
 import Stats from "./Stats";
 import TreeDisplay from "./tree-display/TreeDisplay";
+import CumulativeGraph from "./CumulativeGraph";
 
 export default ({
   data,
@@ -43,6 +44,8 @@ export default ({
           unrecycledPaperTotal={unrecycledPaperTotal}
           recycledPaperTotal={recycledPaperTotal}
         />
+
+        <CumulativeGraph data={data} />
       </div>
     </>
   );
