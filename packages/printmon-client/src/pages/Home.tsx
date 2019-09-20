@@ -41,7 +41,7 @@ const API_HOST =
   process.env.REACT_APP_API_HOST || "https://printmon.potatofrom.space";
 
 function Home() {
-  const [startDate, setStartDate] = useState(moment("2018-07-01"));
+  const [startDate, setStartDate] = useState(moment("2019-07-01"));
   const [endDate, setEndDate] = useState(moment.utc());
   const [dailyTotals, setDailyTotals] = useState<HistoricalTotals | undefined>(
     undefined
