@@ -20,8 +20,8 @@ import {
 
 function App({ history }: RouteComponentProps<{}>) {
   return (
-    <div className="bp3-dark">
-      <Navbar color="dark">
+    <div>
+      <Navbar>
         <NavbarGroup align={Alignment.LEFT}>
           <NavbarHeading>AB Printing</NavbarHeading>
           <NavbarDivider />
