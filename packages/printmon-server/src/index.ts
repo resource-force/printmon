@@ -18,7 +18,7 @@ import { cwd } from "process";
   const dataDirectory: string = program.dataDirectory || cwd();
 
   await init(dataDirectory);
-  await update();
+  // await update();
   server();
   // Update print records every day
   cron.schedule("0 0 * * *", async () => {

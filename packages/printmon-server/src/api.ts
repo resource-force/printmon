@@ -1,6 +1,6 @@
-import { Meter, Device } from "./store";
-import { Op } from "sequelize";
-import moment from "moment";
+import { Meter, Device, MeterData } from "./store";
+import sequelize, { Op } from "sequelize";
+import moment, { Moment } from "moment";
 import { Request, Response } from "express";
 import { MeterTypes } from "./laserwatch/types";
 import Groups from "./laserwatch/groups";
@@ -15,9 +15,6 @@ export type HistoricalTotals = {
   [date: string]: {
     [MeterTypes.TOTAL_UNITS_OUTPUT]: number;
     [MeterTypes.DUPLEX]: number;
-    [MeterTypes.TOTAL_COPIER_UNITS]: number;
-    [MeterTypes.TOTAL_PRINT_UNITS]: number;
-    [MeterTypes.TOTAL_SCAN_UNITS]: number;
     [index: string]: number;
   };
 };
@@ -35,59 +32,84 @@ export async function getHistoricalTotal(req: Request, res: Response) {
   if (!start.isValid() || !end.isValid()) {
     return res.status(400).send("Bad start/end date");
   }
-  const hsDevices = await Device.findAll({
+  const hsDevices = (await Device.findAll({
     where: {
       groupId: {
         [Op.eq]: Groups.HIGH_SCHOOL
       }
     }
-  });
+  })).map(r => r.dataValues);
 
-  let records = await Meter.findAll({
+  const output: HistoricalTotals = {};
+
+  await Promise.all(
+    hsDevices.map(async ({ id, name }) => {
+      for (const type of [MeterTypes.TOTAL_UNITS_OUTPUT, MeterTypes.DUPLEX]) {
+        const totals = await getDeviceTotals(id, type, start, end);
+
+        if (totals.total > 20_000) console.log(name, ":", totals.total);
+
+        for (const date in totals.daily) {
+          if (output[date] === undefined) {
+            output[date] = {
+              [MeterTypes.TOTAL_UNITS_OUTPUT]: 0,
+              [MeterTypes.DUPLEX]: 0
+            };
+          }
+          output[date][type] += totals.daily[date];
+        }
+      }
+    })
+  );
+
+  res.send(sortObject(output));
+}
+
+export async function getDeviceTotals(
+  deviceId: string,
+  meterType: MeterTypes,
+  start: Moment,
+  end: Moment
+) {
+  let output: { [date: string]: number } = {};
+  let total = 0;
+
+  let records: MeterData[] = (await Meter.findAll({
     where: {
-      firstReportedAt: {
+      lastReportedAt: {
         [Op.between]: [start.toDate(), end.toDate()]
       },
       type: {
-        [Op.or]: [
-          MeterTypes.TOTAL_UNITS_OUTPUT,
-          MeterTypes.DUPLEX,
-          MeterTypes.TOTAL_COPIER_UNITS,
-          MeterTypes.TOTAL_PRINT_UNITS,
-          MeterTypes.TOTAL_SCAN_UNITS
-        ]
+        [Op.eq]: meterType
       },
       deviceId: {
-        [Op.or]: hsDevices.map(d => d.dataValues.id)
+        [Op.eq]: deviceId
       }
+    },
+    order: [["count", "ASC"]]
+  })).map(r => r.dataValues);
+
+  for (let i = 0; i < records.length - 1; i++) {
+    // Sometimes the delta value is incorrect (e.g. goes from 2250 -> 2277 w/delta = 1)
+    // so recalculate it manually here.
+    records[i + 1].delta = records[i + 1].count - records[i].count;
+    if (records[i + 1].delta === 86839) {
+      console.log(records[i], records[i + 1]);
     }
-  });
+  }
 
-  const output: HistoricalTotals = {};
-  const deviceTotals = {};
-
-  records.forEach(({ dataValues }) => {
-    const date: string = dataValues.firstReportedAt.toISOString();
+  records.forEach(record => {
+    // printRecord(record);
+    const date: string = record.lastReportedAt.toISOString();
     if (output[date] === undefined) {
-      output[date] = {
-        [MeterTypes.TOTAL_UNITS_OUTPUT]: 0,
-        [MeterTypes.DUPLEX]: 0,
-        [MeterTypes.TOTAL_COPIER_UNITS]: 0,
-        [MeterTypes.TOTAL_PRINT_UNITS]: 0,
-        [MeterTypes.TOTAL_SCAN_UNITS]: 0
-      };
+      output[date] = 0;
     }
-    output[date][dataValues.type] += dataValues.delta;
-
-    const name = hsDevices.find(d => d.dataValues.id === dataValues.deviceId)!
-      .dataValues.name;
-    if (deviceTotals[name] === undefined) {
-      deviceTotals[name] = 0;
-    }
-
-    if (dataValues.type === MeterTypes.TOTAL_UNITS_OUTPUT)
-      deviceTotals[name] += dataValues.delta;
+    output[date] += record.delta;
+    total += record.delta;
   });
-  console.log(deviceTotals);
-  res.send(sortObject(output));
+
+  return {
+    total,
+    daily: output
+  };
 }

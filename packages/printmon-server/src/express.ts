@@ -1,5 +1,6 @@
 import express from "express";
-import { getHistoricalTotal } from "./api";
+import { getHistoricalTotal, getDeviceTotals } from "./api";
+import moment from "moment";
 
 export default function server() {
   const app = express();

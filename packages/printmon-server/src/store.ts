@@ -74,10 +74,16 @@ export default async function init(dataFolder: string) {
       unique: "compositeIndex",
       allowNull: false
     },
+    /**
+     * Doesn't include times.
+     */
     firstReportedAt: {
       type: Sequelize.DATE,
       allowNull: false
     },
+    /**
+     * Doesn't include times.
+     */
     lastReportedAt: {
       type: Sequelize.DATE,
       allowNull: false
