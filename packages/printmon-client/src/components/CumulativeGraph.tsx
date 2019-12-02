@@ -1,12 +1,12 @@
 import React from "react";
 
 import {
-  LineChart,
   CartesianGrid,
   XAxis,
   YAxis,
   Tooltip,
-  Line
+  AreaChart,
+  Area
 } from "recharts";
 import moment from "moment";
 
@@ -38,7 +38,7 @@ export default function CumulativeGraph({
     <>
       <h2>Cumulative Sheets</h2>
       <div style={{ width: "750px", margin: "0 auto" }}>
-        <LineChart
+        <AreaChart
           width={750}
           height={750}
           data={transposed}
@@ -50,16 +50,25 @@ export default function CumulativeGraph({
           }}
         >
           <CartesianGrid strokeDasharray={null} />
-          <XAxis dataKey="date" />
-          <YAxis tickFormatter={formatNumbersWithCommas} />
-          <Tooltip formatter={formatNumbersWithCommas} />
-          <Line
+          <XAxis dataKey="date" tick={{ fontSize: 14 }} />
+          <YAxis
+            tickFormatter={formatNumbersWithCommas}
+            tick={{ fontSize: 14 }}
+          />
+          <Tooltip
+            formatter={formatNumbersWithCommas}
+            labelStyle={{ fontSize: 16 }}
+            contentStyle={{ fontSize: 24 }}
+          />
+          <Area
             dot={false}
             type="monotone"
             dataKey="Cumulative Physical Sheets"
-            stroke="#82ca9d"
+            stroke="#026340"
+            strokeWidth={8}
+            fill="#026340"
           />
-        </LineChart>
+        </AreaChart>
       </div>
     </>
   );

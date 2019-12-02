@@ -27,7 +27,7 @@ export default ({ data }: { data: { date: string; total: number }[] }) => {
       <YAxis />
       <Tooltip />
       <Legend>Physical Sheets Printed</Legend>
-      <Line type="monotone" dataKey="total" stroke="#82ca9d" />
+      <Line type="monotone" dataKey="total" stroke="#82ca9d" strokeWidth={16} />
     </LineChart>
   );
 };
