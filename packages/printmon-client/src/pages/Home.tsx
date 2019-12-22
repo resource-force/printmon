@@ -3,7 +3,7 @@ import moment from "moment";
 import { HistoricalTotals, MeterTypes } from "../api";
 import { withRouter } from "react-router";
 import PrintData from "../components/CurrentYearView";
-import { Spinner } from "@blueprintjs/core";
+import { Spinner, Button } from "@blueprintjs/core";
 import { DateInput, IDateFormatProps } from "@blueprintjs/datetime";
 
 function getTotal(all: HistoricalTotals) {
@@ -40,8 +40,12 @@ function getMomentFormatter(format: string): IDateFormatProps {
 const API_HOST =
   process.env.REACT_APP_API_HOST || "https://printmon.potatofrom.space";
 
+const CURRENT_SCHOOL_YEAR = 2019;
+
 function Home() {
-  const [startDate, setStartDate] = useState(moment("2019-07-01"));
+  const [startDate, setStartDate] = useState(
+    moment(`${CURRENT_SCHOOL_YEAR}-07-01`)
+  );
   const [endDate, setEndDate] = useState(moment.utc());
   const [dailyTotals, setDailyTotals] = useState<HistoricalTotals | undefined>(
     undefined
@@ -93,10 +97,33 @@ function Home() {
           locale="en"
         />
         ...
-      </em>
+      </em>{" "}
+      <Button
+        onClick={() => {
+          setStartDate(moment(`${CURRENT_SCHOOL_YEAR}-07-01`));
+          setEndDate(moment());
+        }}
+      >
+        This Year to Date
+      </Button>{" "}
+      <Button
+        onClick={() => {
+          setStartDate(moment(`${CURRENT_SCHOOL_YEAR - 1}-07-01`));
+          setEndDate(moment(`${CURRENT_SCHOOL_YEAR}-06-30`));
+        }}
+      >
+        All of Last Year
+      </Button>{" "}
+      <Button
+        onClick={() => {
+          setStartDate(moment(`${CURRENT_SCHOOL_YEAR - 1}-07-01`));
+          setEndDate(moment().subtract(1, "year"));
+        }}
+      >
+        This Time Last Year
+      </Button>
       <br />
       <br />
-
       {dailyTotals !== undefined ? (
         <>
           <PrintData
@@ -111,9 +138,7 @@ function Home() {
           <p>Loading...</p>
         </div>
       )}
-
       <h2>Questions</h2>
-
       <p>
         If you have any questions on the data provided or our paper usage as a
         whole, please contact us at{" "}
