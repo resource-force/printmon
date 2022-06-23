@@ -24,7 +24,7 @@
     "commander": "^3.0.1",
     "express": "^4.17.1",
     "form-data": "^2.5.1",
-    "jsdom": "^15.1.1",
+    "jsdom": "^16.5.0",
     "lodash": "^4.17.15",
     "moment": "^2.23.0",
     "node-cron": "^2.0.3",
